@@ -1,0 +1,11 @@
+version: "3.5"
+
+services:
+  converter:
+    build: .
+    init: true
+    volumes:
+      - ".:/workdir"
+    user: 1000:1000
+    working_dir: /workdir
+    entrypoint: sh ./convert.sh
