@@ -96,6 +96,13 @@ bool SMP7C_::renderFrame() {
     FrameIndexData indexData;
     png_blob_parser_err_t err;
 
+#ifdef SMP7C_RANDOM_MODE
+    // Note this implementation is deterministic
+    uint32_t indexSize = pngBlobParser.getIndexSize();
+    randomSeed(frameInd);
+    frameInd = random(0, indexSize);
+#endif
+
     err = pngBlobParser.readIndex(frameInd, indexData);
     Serial.printf("frameData: ind: %u, offset: %u, size: %u\n", frameInd,
                   indexData.frameOffset, indexData.frameSize);

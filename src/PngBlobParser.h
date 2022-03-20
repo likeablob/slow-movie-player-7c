@@ -37,4 +37,5 @@ class PngBlobParser {
     png_blob_parser_err_t readIndex(uint32_t ind, FrameIndexData &out);
     png_blob_parser_err_t readFrame(FrameIndexData &indexData,
                                     pngle_draw_callback_t callback);
+    uint32_t getIndexSize();
 };

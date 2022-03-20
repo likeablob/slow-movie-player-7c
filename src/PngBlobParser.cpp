@@ -133,3 +133,7 @@ png_blob_parser_err_t PngBlobParser::readFrame(FrameIndexData &indexData,
 
     return err;
 }
+
+uint32_t PngBlobParser::getIndexSize() {
+    return _indexFile.size() / sizeof(uint32_t) + 1;
+}
