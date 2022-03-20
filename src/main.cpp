@@ -107,7 +107,7 @@ void setup() {
     }
 
     // Prepare for deep sleep.
-    init_run_ulp(1000 * 1000);
+    init_run_ulp(ULP_WAKEUP_PERIOD_US);
     PM::setWaitBusyRequest(ulp_status); // EPD_BUSY will be handled by ULP.
 
     Serial.printf("Elapsed: %lu\n", millis());
