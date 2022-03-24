@@ -50,7 +50,7 @@ void start_deep_sleep() {
 
 void reboot_by_deep_sleep() {
     PM::disableBusPower();
-    init_run_ulp(1000 * 1000);
+    init_run_ulp(ULP_WAKEUP_PERIOD_US);
     ulp__counterPeriodicTask = (ulp__counterPeriodicTask & 0xFFFF0000) |
                                ((COUNTER_PERIODIC_TASK - 3) & UINT16_MAX);
     start_deep_sleep();
