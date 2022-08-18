@@ -1,9 +1,11 @@
 <p align="center">
   <img align="center" height="300px" width="auto" src="./images/smp7c_main.jpg">
   <p align="center">
-  <small>The picture drawn is from "Spirited Away (2001)" © 2001 Studio Ghibli・NDDTM.</small>
+  <small>From "Spirited Away (2001)" © 2001 Studio Ghibli・NDDTM.</small>
   </p>
 </p>
+
+https://user-images.githubusercontent.com/46628917/185350349-dca5a5df-3bee-4c23-829b-23d41562c1f2.mp4
 
 # slow-movie-player-7c
 
