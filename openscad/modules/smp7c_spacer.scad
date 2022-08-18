@@ -56,7 +56,22 @@ module smp7c_spacer_epd_mount_base(){
 module smp7c_spacer_battery_holder_diff() {
   // Holder space
   translate([0, PICTURE_FRAME_INNER_SPACE.y/2 - SMP7C_SPACER_BATTERY_HOLDER.y/2 + 0.01, SMP7C_SPACER_BODY.z/2])
-  cube(size=SMP7C_SPACER_BATTERY_HOLDER, center=true);
+  difference() {
+    cube(size=SMP7C_SPACER_BATTERY_HOLDER, center=true);
+
+    // Hold batteries at the edge
+    holder_edge=[10, SMP7C_SPACER_BATTERY_HOLDER.y, 5];
+
+    mirror_x()
+    translate([SMP7C_SPACER_BATTERY_HOLDER.x/2 - holder_edge.x/2, 0, 0])
+    difference() {
+      translate([0, 0, SMP7C_SPACER_BODY.z/2 - holder_edge.z/2])
+      cube(size=[holder_edge.x, SMP7C_SPACER_BATTERY_HOLDER.y, holder_edge.z], center=true);
+
+      rotate([0, 90, 0])
+      cylinder(d=14.5, h=holder_edge.x, center=true);
+    }
+  }
 
   // Slots for terminal
   mirror_x()
