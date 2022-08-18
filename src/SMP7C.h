@@ -47,6 +47,8 @@ class SMP7C_ {
 
     bool begin(uint32_t debugBaudrate = 115200);
     bool renderFrame();
+
+    void renderLowVoltageCaution();
 };
 
 extern SMP7C_ &SMP7C;

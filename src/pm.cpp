@@ -44,4 +44,16 @@ void resetRtcPins() {
 
 void setWaitBusyRequest(uint32_t &status) { status |= PM_STATUS_WAIT_BUSY_REQ; }
 
+void setForeverSleepRequest(uint32_t &status) {
+    status |= PM_STATUS_FOREVER_SLEEP_REQ;
+}
+
+uint16_t readBatteryVoltage() {
+    analogSetAttenuation(ADC_0db);
+
+    return analogReadMilliVolts(GPIO_NUM_34) * PM_BAT_V_FACTOR;
+}
+
+bool isLowBattery() { return readBatteryVoltage() <= PM_VBAT_TH_EMERGENCY; }
+
 } // namespace PM

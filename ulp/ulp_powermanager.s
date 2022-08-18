@@ -33,22 +33,34 @@ entry:
 L.4:
 L.2:
 	reg_wr 0x3ff4848c,24,24,1
+	move r2,status
+	ld r2,r2,0
+	and r1,r2,2
+	move r1,r1 #if r1 == 0 goto L.6
+	jump L.6, eq
+	and r2,r2,1
+	move r2,r2 #{ if r2 goto L.6 
+	jump 1f, eq
+	jump L.6
+1:           #}
+	halt 
+L.6:
 	move r2,_counterPeriodicTask
 	ld r1,r2,0
 	add r1,r1,1
 	st r1,r2,0
 	ld r2,r2,0
 	move r1,3600
-	sub r2,r2,r1 #{ if r2 < r1 goto L.6
+	sub r2,r2,r1 #{ if r2 < r1 goto L.8
 	add r2,r2,r1
-	jump L.6, ov #}
+	jump L.8, ov #}
 	move r2,_counterPeriodicTask
 	move r1,0
 	st r1,r2,0
 	wake 
 	reg_wr 0x3ff4848c,24,24,0
 	halt 
-L.6:
+L.8:
 L.1:
 
 halt

@@ -1,4 +1,5 @@
 #include "SMP7C.h"
+#include "assets/lowbattery.h"
 
 const char *indexFilePath = "/index.bin";
 const char *imagesFilePath = "/images.bin";
@@ -132,4 +133,19 @@ bool SMP7C_::renderFrame() {
     display->epd2.refresh();
 
     return true;
+}
+
+void SMP7C_::renderLowVoltageCaution() {
+    // Init EPD screen buffer.
+    display->setFullWindow();
+    display->setRotation(0);
+    display->firstPage();
+
+    display->drawXBitmap(display->width() / 2 - lowbattery_width / 2,
+                         display->height() / 2 - lowbattery_height / 2,
+                         lowbattery_bits, lowbattery_width, lowbattery_height,
+                         GxEPD_RED);
+
+    display->nextPage();
+    display->epd2.refresh();
 }

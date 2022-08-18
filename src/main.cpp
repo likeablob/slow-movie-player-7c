@@ -23,6 +23,7 @@ extern const uint8_t ulp_main_bin_end[] asm("_binary_ulp_main_bin_end");
 
 // RTC variables
 RTC_DATA_ATTR uint32_t RTC_SMP7C_frameInd = 0;
+RTC_DATA_ATTR uint32_t RTC_batV = 0;
 
 static void init_run_ulp(uint32_t usec) {
     ulp_set_wakeup_period(0, usec);
@@ -99,16 +100,26 @@ void setup() {
         return;
     }
 
-    // Render (Load a frame, send it to EPD.)
-    if(!SMP7C.renderFrame()) {
-        Serial.println("SMP7C.renderFrame() failed. Rebooting.");
-        reboot_by_deep_sleep();
-        return;
+    // Check battery level
+    bool isLowBattery = PM::isLowBattery();
+    if(isLowBattery) {
+        Serial.println("Low battery detected.");
+        SMP7C.renderLowVoltageCaution();
+    } else {
+        // Render (Load a frame, send it to EPD.)
+        if(!SMP7C.renderFrame()) {
+            Serial.println("SMP7C.renderFrame() failed. Rebooting.");
+            reboot_by_deep_sleep();
+            return;
+        }
     }
 
     // Prepare for deep sleep.
     init_run_ulp(ULP_WAKEUP_PERIOD_US);
     PM::setWaitBusyRequest(ulp_status); // EPD_BUSY will be handled by ULP.
+    if(isLowBattery) {
+        PM::setForeverSleepRequest(ulp_status); // Never wake up by ULP.
+    }
 
     Serial.printf("Elapsed: %lu\n", millis());
     start_deep_sleep();

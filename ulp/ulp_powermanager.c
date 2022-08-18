@@ -30,13 +30,19 @@ void entry() {
             // Disable Pull-up of GPIO25 (EPD_BUSY). Avoid current leakage.
             reg_wr(RTC_IO_PAD_DAC1_REG, RTC_IO_PDAC1_RUE_S, RTC_IO_PDAC1_RUE_S,
                    0);
-            // // Put GPIO32 (BUS_POWER_SW) to LOW. Power off EPD & SD bus.
+            // Put GPIO32 (BUS_POWER_SW) to LOW. Power off EPD & SD bus.
             reg_wr(RTC_GPIO_OUT_W1TC_REG, RTC_GPIO_OUT_DATA_W1TC_S + 9,
                    RTC_GPIO_OUT_DATA_W1TC_S + 9, 1);
         }
     }
     // Hold GPIO32 (BUS_POWER_SW). To keep Bus Power ON.
     reg_wr(RTC_IO_XTAL_32K_PAD_REG, RTC_IO_X32P_HOLD_S, RTC_IO_X32P_HOLD_S, 1);
+
+    // If FOREVER_SLEEP_REQ is set and not processing WAIT_BUSY_REQ
+    if((status & PM_STATUS_FOREVER_SLEEP_REQ) &&
+       !(status & PM_STATUS_WAIT_BUSY_REQ)) {
+        halt();
+    }
 
     _counterPeriodicTask++;
     if(_counterPeriodicTask >= COUNTER_PERIODIC_TASK) {
